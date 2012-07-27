@@ -1,0 +1,14 @@
+Choice Words
+============
+This library generates random text based on an input grammar.
+
+License
+=======
+Choice Words is licensed under the BSD license. See LICENSE file for details.
+
+Credits
+=======
+Choice Words is written by Frederik De Bleser.
+
+The idea of the project is based on the Kant Generator Pro, written by Mark Pilgrim as part of his "Dive Into Python" book. (http://www.diveintopython.net/).
+
