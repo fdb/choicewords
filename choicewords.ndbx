@@ -3,11 +3,31 @@
     <property name="canvasHeight" value="1000"/>
     <property name="canvasWidth" value="1000"/>
     <link href="python:choicewords.py" rel="functions"/>
-    <node name="root" prototype="core.network" renderedChild="choicewords">
-        <node function="choicewords/from_file" name="choicewords" position="1.00,1.00">
-            <port name="file" range="value" type="string" value="thankyou.txt" widget="file"/>
+    <node name="root" prototype="core.network" renderedChild="combine1">
+        <node function="choicewords/from_file" name="choicewords" position="5.00,1.00">
+            <port name="file" range="value" type="string" value="examples/thankyou.txt" widget="file"/>
             <port name="root_key" range="value" type="string" value="root" widget="string"/>
-            <port name="variation" range="value" type="int" value="1" widget="seed"/>
+            <port name="seed" range="value" type="int" value="1" widget="seed"/>
         </node>
+        <node name="colorize1" position="2.00,2.00" prototype="corevector.colorize">
+            <port name="fill" type="color" value="#eab4aaff"/>
+            <port name="stroke" type="color" value="#00000096"/>
+            <port name="strokeWidth" type="float" value="1.0"/>
+        </node>
+        <node name="combine1" position="2.00,4.00" prototype="list.combine"/>
+        <node name="rect1" position="2.00,1.00" prototype="corevector.rect">
+            <port name="width" type="float" value="500.0"/>
+            <port name="height" type="float" value="300.0"/>
+        </node>
+        <node name="textpath1" position="5.00,2.00" prototype="corevector.textpath">
+            <port name="font_size" type="float" value="20.0"/>
+            <port name="align" type="string" value="LEFT"/>
+            <port name="position" type="point" value="-200.00,-50.00"/>
+            <port name="width" type="float" value="410.0"/>
+        </node>
+        <conn input="textpath1.text" output="choicewords"/>
+        <conn input="colorize1.shape" output="rect1"/>
+        <conn input="combine1.list1" output="colorize1"/>
+        <conn input="combine1.list2" output="textpath1"/>
     </node>
 </ndbx>
