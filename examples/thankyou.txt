@@ -1,0 +1,40 @@
+root:
+- Dear {{ giver }}, {{ thanks }} for the {{ object }}. It {{ rationale }} when {{ event }}. {{ salutations }}, {{ receiver }}.
+
+giver:
+-  Aunt Emma
+-  Dave and Edna
+-  Uncle Bob
+
+thanks:
+- thank you
+- my greatest thanks
+
+object:
+- purple vase
+- golden retriever
+- dishwasher
+
+rationale:
+- came in handy
+- proved necessary
+- was useful
+
+event:
+- the house burned down
+- the cat vomitted
+- our baby was born
+- my bike was stolen
+
+salutations:
+- Kind regards
+- Best regards
+- All the best
+- Love
+
+receiver:
+- David
+- God
+- Emmy
+- Stan
+- Your son
