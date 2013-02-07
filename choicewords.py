@@ -1,5 +1,6 @@
 import re
-from random import seed, choice, randint
+from random import seed as _seed, choice, randint
+from math import pow
 
 VARIABLE_TAG_START = '{{'
 VARIABLE_TAG_END = '}}'
@@ -7,19 +8,20 @@ VARIABLE_TAG_END = '}}'
 tag_re = re.compile('(%s.*?%s)' %
         (re.escape(VARIABLE_TAG_START), re.escape(VARIABLE_TAG_END)))
 
-def choice_words(phrase_dict, root_key='root', variation=None):
-    if variation is None:
-        variation = randint(0, 9999999)
-    return eval_phrase(phrase_dict, lookup_phrase(root_key, phrase_dict, variation), variation)
+def choice_words(phrase_book, root_key='root', seed=None):
+    if isinstance(seed, int):
+        seed = str(seed << 10)
+    _seed(seed)
+    return eval_phrase(phrase_book, lookup_phrase(root_key, phrase_book))
 
-def eval_phrase(phrase_dict, phrase, variation):
+def eval_phrase(phrase_book, phrase):
     s = ""
     for token in tokenize(phrase):
         if not token.in_tag:
             s += token.text
         else:
-            s += lookup_phrase(token.text, phrase_dict, variation)
-
+            phrase = lookup_phrase(token.text, phrase_book)
+            s += eval_phrase(phrase_book, phrase)
     return s
 
 class Token(object):
@@ -40,61 +42,52 @@ def tokenize(phrase):
         in_tag = not in_tag
     return result
 
-def lookup_phrase(phrase_key, phrase_dict, variation):
-    v = phrase_dict.get(phrase_key)
+def lookup_phrase(phrase_key, phrase_book):
+    v = phrase_book.get(phrase_key)
     if v is None:
         raise ValueError('Could not find phrase with key "%s".' % phrase_key)
-    if isinstance(v, list):  
-        seed(variation)
-        return choice(v)
-    else:
-        return v
+    assert isinstance(v, list)
+    return choice(v)
 
-def thank_you_note(variation=None):
-    d = {
-        "root": "Dear {{ giver }}, {{ thanks }} for the {{ object }}. It {{ rationale }} when {{ event }}. {{ salutations }}, {{ receiver }}.",
-        "giver": ["Aunt Emma", "Dave and Edna", "Uncle Bob"],
-        "thanks": ["thank you", "my greatest thanks"],
-        "object": ["purple vase", "golden retriever", "dishwasher"],
-        "rationale": ["came in handy", "proved necessary", "was useful"],
-        "event": ["the house burned down", "the cat vomitted", "our baby was born", "my bike was stolen"],
-        "salutations": ["Kind regards", "Best regards", "All the best", "Love"],
-        "receiver": ["David", "God", "Emmy", "Stan", "Your son"]
-        }
-    return choice_words(d, 'root')
-
-def parse_grammar_file(fname):
+def parse_phrase_book(fname):
     phrases = []
     current_phrase = None 
     for line_number, line in enumerate(open(fname).readlines()):
-        line = line.rstrip()
-        if line.strip().startswith('#'):
+        line = line.strip()
+        if line.startswith('#'):
             # Ignore lines with comments.
             continue
-        elif len(line.strip()) == 0:
+        elif len(line) == 0:
             # Empty lines reset the phrase.
             current_phrase = None
-        elif line.startswith('  '):
-            # Phrases are indented
+        elif line.startswith('- '):
+            # Phrases are prefixed with "- ".
             if current_phrase is None:
-                raise ValueError("%s: Line without a key." % line_number)
+                raise ValueError("%s: line without a key." % line_number)
             else:
-                current_phrase['values'].append(line.strip())
+                current_phrase['values'].append(line[2:].strip())
         elif line.endswith(':'):
             # Keys end with ":"
               current_phrase = {'key':line[:-1], 'values': []}
               phrases.append(current_phrase)
         else:
-            raise ValueError('%s: Do not know what to do with line "%s".' % (line_number, line))
-    phrase_dict = {}
+            raise ValueError('%s: do not know what to do with line "%s".' % (line_number, line))
+    phrase_book = {}
     for phrase in phrases:
-        phrase_dict[phrase['key']] = phrase['values']
-    return phrase_dict
+        phrase_book[phrase['key']] = phrase['values']
+    return phrase_book
 
-def from_file(fname, root_key='root', variation=None):
-    phrases = parse_grammar_file(fname)
-    return choice_words(phrases, root_key)
+def from_file(fname, root_key='root', seed=None):
+    phrase_book = parse_phrase_book(fname)
+    return choice_words(phrase_book, root_key, seed)
 
-#if __name__=='__main__':
-#    import sys
-#    print from_file(sys.argv[1])
+if __name__=='__main__':
+    from optparse import OptionParser
+    parser = OptionParser(usage='Usage: %prog [options] <phrasebook_file>')
+    parser.add_option('-r', '--root', help='the root key', default='root')
+    parser.add_option('-s', '--seed', help='random seed index')
+    option, args = parser.parse_args()
+    if len(args) == 1:
+        print from_file(args[0], root_key=option.root, seed=option.seed)
+    else:
+        parser.print_help()
