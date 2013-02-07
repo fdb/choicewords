@@ -13,10 +13,6 @@ This example generates "thank you" notes:
     - Dave and Edna
     - Uncle Bob
 
-    thanks:
-    - thank you
-    - my greatest thanks
-
     object:
     - purple vase
     - golden retriever
