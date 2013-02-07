@@ -39,6 +39,10 @@ You can use a seed value to specify a specific random variation. The seed doesn'
 
     python choicewords.py --seed 123 examples/thankyou.txt
 
+The system only deals with text, but this text can be in any language, including programming and markup languages. The examples include a generative SVG drawing generator:
+
+    python choicewords.py examples/svg.txt > drawing.html && open drawing.html
+
 
 License
 =======
