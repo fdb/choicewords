@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ndbx formatVersion="16" type="file" uuid="3e017315-c25e-4e65-9a0e-e6aaaf6b8917">
+    <property name="canvasHeight" value="1000"/>
+    <property name="canvasWidth" value="1000"/>
+    <link href="python:choicewords.py" rel="functions"/>
+    <node name="root" prototype="core.network" renderedChild="choicewords">
+        <node function="choicewords/from_file" name="choicewords" position="1.00,1.00">
+            <port name="file" range="value" type="string" value="thankyou.txt" widget="file"/>
+            <port name="root_key" range="value" type="string" value="root" widget="string"/>
+            <port name="variation" range="value" type="int" value="1" widget="seed"/>
+        </node>
+    </node>
+</ndbx>

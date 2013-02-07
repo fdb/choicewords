@@ -95,6 +95,6 @@ def from_file(fname, root_key='root', variation=None):
     phrases = parse_grammar_file(fname)
     return choice_words(phrases, root_key)
 
-if __name__=='__main__':
-    import sys
-    print from_file(sys.argv[1])
+#if __name__=='__main__':
+#    import sys
+#    print from_file(sys.argv[1])
