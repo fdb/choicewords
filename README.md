@@ -43,6 +43,10 @@ The system only deals with text, but this text can be in any language, including
 
     python choicewords.py examples/svg.txt > drawing.html && open drawing.html
 
+Which will create drawings looking like this: 
+
+![](examples/svg-drawing.png)
+
 
 License
 =======
