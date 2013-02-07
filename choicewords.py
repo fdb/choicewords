@@ -10,7 +10,7 @@ tag_re = re.compile('(%s.*?%s)' %
 def choice_words(phrase_dict, root_key='root', variation=None):
     if variation is None:
         variation = randint(0, 9999999)
-    return eval_phrase(phrase_dict, phrase_dict[root_key], variation)
+    return eval_phrase(phrase_dict, lookup_phrase(root_key, phrase_dict, variation), variation)
 
 def eval_phrase(phrase_dict, phrase, variation):
     s = ""
@@ -41,7 +41,9 @@ def tokenize(phrase):
     return result
 
 def lookup_phrase(phrase_key, phrase_dict, variation):
-    v = phrase_dict[phrase_key]
+    v = phrase_dict.get(phrase_key)
+    if v is None:
+        raise ValueError('Could not find phrase with key "%s".' % phrase_key)
     if isinstance(v, list):  
         seed(variation)
         return choice(v)
@@ -61,5 +63,38 @@ def thank_you_note(variation=None):
         }
     return choice_words(d, 'root')
 
+def parse_grammar_file(fname):
+    phrases = []
+    current_phrase = None 
+    for line_number, line in enumerate(open(fname).readlines()):
+        line = line.rstrip()
+        if line.strip().startswith('#'):
+            # Ignore lines with comments.
+            continue
+        elif len(line.strip()) == 0:
+            # Empty lines reset the phrase.
+            current_phrase = None
+        elif line.startswith('  '):
+            # Phrases are indented
+            if current_phrase is None:
+                raise ValueError("%s: Line without a key." % line_number)
+            else:
+                current_phrase['values'].append(line.strip())
+        elif line.endswith(':'):
+            # Keys end with ":"
+              current_phrase = {'key':line[:-1], 'values': []}
+              phrases.append(current_phrase)
+        else:
+            raise ValueError('%s: Do not know what to do with line "%s".' % (line_number, line))
+    phrase_dict = {}
+    for phrase in phrases:
+        phrase_dict[phrase['key']] = phrase['values']
+    return phrase_dict
+
+def from_file(fname, root_key='root', variation=None):
+    phrases = parse_grammar_file(fname)
+    return choice_words(phrases, root_key)
+
 if __name__=='__main__':
-    print thank_you_note()
+    import sys
+    print from_file(sys.argv[1])
