@@ -28,7 +28,7 @@ pos:
 - 3{{ digit }}{{ digit }}
 - 4{{ digit }}{{ digit }}
 
-# Sizes can range from 11 to 99.
+# Sizes can range from 1 to 99.
 size:
 - {{ digit }}
 - {{ digit }}{{ digit }}
