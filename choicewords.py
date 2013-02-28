@@ -17,18 +17,21 @@ def choice_words(phrase_book, root_key='root', seed=None):
 def eval_phrase(phrase_book, phrase):
     s = ""
     for token in tokenize(phrase):
-        if not token.in_tag:
+        if token.token_type == TOKEN_TEXT:
             s += token.text
         else:
             phrase = lookup_phrase(token.text, phrase_book)
             s += eval_phrase(phrase_book, phrase)
     return s
 
+TOKEN_TEXT = 'text'
+TOKEN_REF = 'ref'
+
 class Token(object):
 
-    def __init__(self, text, in_tag):
-        self.in_tag = in_tag
-        if in_tag:
+    def __init__(self, text, token_type):
+        self.token_type = token_type
+        if token_type == TOKEN_REF:
             self.text = text[2:-2].strip()
         else:
             self.text = text
@@ -38,7 +41,8 @@ def tokenize(phrase):
     in_tag = False
     for part in tag_re.split(phrase):
         if part:
-            result.append(Token(part, in_tag))
+            token_type = TOKEN_REF if in_tag else TOKEN_TEXT
+            result.append(Token(part, token_type))
         in_tag = not in_tag
     return result
 
