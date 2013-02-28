@@ -14,6 +14,16 @@ def choice_words(phrase_book, root_key='root', seed=None):
     _seed(seed)
     return eval_phrase(phrase_book, lookup_phrase(root_key, phrase_book))
 
+def apply_filters(s, filters):
+    for f in filters:
+        if f == 'upper':
+            s = s.upper()
+        elif f == 'lower':
+            s = s.lower()
+        elif f == 'title':
+            s = s.title()
+    return s
+
 def eval_phrase(phrase_book, phrase):
     s = ""
     for token in tokenize(phrase):
@@ -21,7 +31,8 @@ def eval_phrase(phrase_book, phrase):
             s += token.text
         else:
             phrase = lookup_phrase(token.text, phrase_book)
-            s += eval_phrase(phrase_book, phrase)
+            text = eval_phrase(phrase_book, phrase)
+            s += apply_filters(text, token.filters)
     return s
 
 TOKEN_TEXT = 'text'
@@ -32,7 +43,10 @@ class Token(object):
     def __init__(self, text, token_type):
         self.token_type = token_type
         if token_type == TOKEN_REF:
-            self.text = text[2:-2].strip()
+            text_without_tags = text[2:-2].strip()
+            text_and_filters = text_without_tags.split('|')
+            self.text = text_and_filters[0]
+            self.filters = text_and_filters[1:]
         else:
             self.text = text
 
