@@ -104,8 +104,10 @@ if __name__=='__main__':
     parser = OptionParser(usage='Usage: %prog [options] <phrasebook_file>')
     parser.add_option('-r', '--root', help='the root key', default='root')
     parser.add_option('-s', '--seed', help='random seed index')
+    parser.add_option('-n', '--amount', help='number of lines to generate', type="int", default=1)
     option, args = parser.parse_args()
     if len(args) == 1:
-        print from_file(args[0], root_key=option.root, seed=option.seed)
+        for i in range(option.amount):
+            print from_file(args[0], root_key=option.root, seed=option.seed)
     else:
         parser.print_help()
