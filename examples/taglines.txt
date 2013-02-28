@@ -1,0 +1,131 @@
+root:
+- {{ bigtopic|title }} is {{ cheesy }}.
+- A comedy about {{ bigtopic }}.
+- A comedy about {{ bigtopic }} at a {{ event }}.
+- A comedy about {{ bigtopic }} in {{ location }}.
+- This summer, {{ male }} discovers his {{ secret }}.
+- This summer, {{ female }} discovers her {{ secret }}.
+- This spring, {{ female }} discovers the way to his {{ secret_location }}.
+- This spring, {{ male }} discovers the way to her {{ secret_location }}.
+- It's all about {{ bigtopic }}.
+- It's all about {{ bigtopic }} and {{ bigtopic }}.
+- First comes {{ bigtopic }}. Then comes {{ bigtopic }}. And then...
+- First comes {{ bigtopic }}. Then comes {{ bigtopic }}.
+- {{ bigtopic|title }} brought them together. {{ bigtopic|title }} will tear them apart.
+- {{ bigtopic|title }} at a {{ event }}.
+- {{ bigtopic|title }} in {{ location }}.
+- {{ bigtopic|title }} in {{ location }}.
+- Love is in the {{ abstract }}.
+- Love is here to stay... so is her {{ animal }}.
+- This is {{ crazy }}!
+- A story of {{ bigtopic }} at first sight. In {{ location }}.
+- A story of {{ bigtopic }} at first sight.
+- {{ sport|title }} pro. {{ love|title }} amateur.
+- All {{ male }} ever wanted was a little {{ small_thing }}.
+- All {{ female }} ever wanted was a little {{ small_thing }}.
+- All {{ male }} ever wanted was a big {{ big_thing }}.
+- All {{ female }} ever wanted was a big {{ big_thing }}.
+
+crazy:
+- crazy
+- marriage
+- hot
+
+sport:
+- golf
+- cooking
+- football
+
+love: 
+- love
+- sex
+- relationship
+- dating
+- romance
+
+small_thing:
+- credit
+- love
+- puppy
+- baby
+- ..
+
+big_thing:
+- wedding dress
+- house
+- car
+- ..
+
+animal:
+- dog
+- grandmother
+- family
+- underwear
+- ex
+- bride
+
+bigtopic:
+- love
+- happiness
+- life
+- sex
+- music
+- sport
+- politics
+- aliens
+
+male:
+- Prince Akeem
+- her boss
+- the man of her dreams
+- he
+
+female:
+- she
+- the woman of his dreams
+- his boss
+- her neighbour
+
+secret:
+- secret to {{ bigtopic }}
+- favourite animal
+- true feelings
+
+secret_location:
+- heart
+- pants
+- toilet
+- dream job
+- love
+
+cheesy:
+- the only inspiration
+- the only exception
+- the way to her heart
+
+event:
+- wedding
+- funeral
+- party
+- date
+- yoga class
+- bar mitzvah
+
+abstract:
+- air
+- stars
+- pants
+- hair
+- blood
+- cloud
+- stars
+- music
+
+location:
+- Central Park
+- the coffee shop
+- the video store
+- the tree
+- the gym
+- the bathroom
+- the bedroom
