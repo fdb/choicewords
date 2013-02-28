@@ -1,18 +1,18 @@
 import re
-from random import seed as _seed, choice, randint
-from math import pow
+from random import seed as _seed, choice
 
 VARIABLE_TAG_START = '{{'
 VARIABLE_TAG_END = '}}'
 
-tag_re = re.compile('(%s.*?%s)' %
-        (re.escape(VARIABLE_TAG_START), re.escape(VARIABLE_TAG_END)))
+tag_re = re.compile('(%s.*?%s)' % (re.escape(VARIABLE_TAG_START), re.escape(VARIABLE_TAG_END)))
+
 
 def choice_words(phrase_book, root_key='root', seed=None):
     if isinstance(seed, int):
         seed = str(seed << 10)
     _seed(seed)
     return eval_phrase(phrase_book, lookup_phrase(root_key, phrase_book))
+
 
 def apply_filters(s, filters):
     for f in filters:
@@ -23,6 +23,7 @@ def apply_filters(s, filters):
         elif f == 'title':
             s = s.title()
     return s
+
 
 def eval_phrase(phrase_book, phrase):
     s = ""
@@ -38,6 +39,7 @@ def eval_phrase(phrase_book, phrase):
 TOKEN_TEXT = 'text'
 TOKEN_REF = 'ref'
 
+
 class Token(object):
 
     def __init__(self, text, token_type):
@@ -50,6 +52,7 @@ class Token(object):
         else:
             self.text = text
 
+
 def tokenize(phrase):
     result = []
     in_tag = False
@@ -60,6 +63,7 @@ def tokenize(phrase):
         in_tag = not in_tag
     return result
 
+
 def lookup_phrase(phrase_key, phrase_book):
     v = phrase_book.get(phrase_key)
     if v is None:
@@ -67,9 +71,10 @@ def lookup_phrase(phrase_key, phrase_book):
     assert isinstance(v, list)
     return choice(v)
 
+
 def parse_phrase_book(fname):
     phrases = []
-    current_phrase = None 
+    current_phrase = None
     for line_number, line in enumerate(open(fname).readlines()):
         line = line.strip()
         if line.startswith('#'):
@@ -86,8 +91,8 @@ def parse_phrase_book(fname):
                 current_phrase['values'].append(line[2:].strip())
         elif line.endswith(':'):
             # Keys end with ":"
-              current_phrase = {'key':line[:-1], 'values': []}
-              phrases.append(current_phrase)
+            current_phrase = {'key': line[:-1], 'values': []}
+            phrases.append(current_phrase)
         else:
             raise ValueError('%s: do not know what to do with line "%s".' % (line_number, line))
     phrase_book = {}
@@ -95,11 +100,13 @@ def parse_phrase_book(fname):
         phrase_book[phrase['key']] = phrase['values']
     return phrase_book
 
+
 def from_file(fname, root_key='root', seed=None):
     phrase_book = parse_phrase_book(fname)
     return choice_words(phrase_book, root_key, seed)
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     from optparse import OptionParser
     parser = OptionParser(usage='Usage: %prog [options] <phrasebook_file>')
     parser.add_option('-r', '--root', help='the root key', default='root')
