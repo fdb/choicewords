@@ -115,6 +115,6 @@ if __name__ == '__main__':
     option, args = parser.parse_args()
     if len(args) == 1:
         for i in range(option.amount):
-            print from_file(args[0], root_key=option.root, seed=option.seed)
+            print(from_file(args[0], root_key=option.root, seed=option.seed))
     else:
         parser.print_help()
